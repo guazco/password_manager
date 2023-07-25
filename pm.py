@@ -66,7 +66,8 @@ def main():
             args.name,
             args.url,
             args.email,
-            args.login)
+            args.login,
+            None)
 
     if args.option in ["extract","e"]:
         res = inputAndValidateMasterPassword()
@@ -89,7 +90,27 @@ def main():
         if args.length == None:
             printc("[red][+][/red] Escreva o tamanho da senha (--length)")
             return
-        password = utils.generate.generatePassword(args.length)
+        if args.name == None or args.url == None or args.login == None:
+            if args.name == None:
+                printc("[red][!][/red] Nome do site (-s) obrigatório ")
+            if args.url == None:
+                printc("[red][!][/red] URL do site (-u) obrigatório ")
+            if args.login == None:
+                printc("[red][!][/red] Usuário do site (-l) obrigatório ")
+            return
+        if args.email == None:
+            args.email = ""
+        res = inputAndValidateMasterPassword()
+        if res is not None:
+            password = utils.generate.generatePassword(args.length)
+            utils.add.addEntry(res[0],
+            res[1],
+            args.name,
+            args.url,
+            args.email,
+            args.login,
+            password,
+            is_generated=True)
         pyperclip.copy(password)
         printc("[green][+][/green] Senha gerada e copiada")
 main()

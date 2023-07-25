@@ -37,7 +37,7 @@ def checkEntry(sitename, siteurl, email, username):
 
 
 # adicionando entrada
-def addEntry(mp, ds, sitename, siteurl, email, username):
+def addEntry(mp, ds, sitename, siteurl, email, username, passwd, is_generated=False):
 
     # Checa se entrada ja existe
     if checkEntry(sitename, siteurl, email, username):
@@ -45,7 +45,10 @@ def addEntry(mp, ds, sitename, siteurl, email, username):
         return
 
     # Checa senha
-    password = getpass("Senha: ")
+    if is_generated:
+        password = passwd
+    else:
+        password = getpass("Senha: ")
 
     # Calcula chave mestre
     mk = computeMasterKey(mp,ds)
